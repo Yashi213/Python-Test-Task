@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 import json
+import pyarrow
 from tqdm import tqdm
+import os
 
-def generate_synthetic_l2(exchange: str, symbol: str, duration_sec: int = 86400, freq_ms: int = 100):
+def generate_synthetic_l2(exchange: str, symbol: str, duration_sec: int = 30, freq_ms: int = 100):
     ts_start = 1712000000000000  # наносекунды
     price = 120000.0
     data = []
@@ -41,6 +43,9 @@ def generate_synthetic_l2(exchange: str, symbol: str, duration_sec: int = 86400,
 # Генерация
 binance_data = generate_synthetic_l2("binance", "BTCUSDT_PERP")
 bybit_data = generate_synthetic_l2("bybit", "BTCUSDT_PERP")
+
+binance_data.to_csv("data/bin")
+bybit_data.to_csv("data/byb")
 
 # Сохранение
 binance_data.to_parquet("data/binance_btc_l2_1d.parquet", index=False)
